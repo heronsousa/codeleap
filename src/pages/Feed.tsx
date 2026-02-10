@@ -1,3 +1,4 @@
+import CreatePostForm from "@/components/CreatePostForm";
 import DeletePostModal from "@/components/DeletePostModal";
 import EditPostModal from "@/components/EditPostModal";
 import PostCard from "@/components/PostCard";
@@ -57,6 +58,14 @@ function Feed() {
     navigate("/");
   };
 
+  const handleCreate = useCallback(
+    async (title: string, content: string) => {
+      await api.createPost({ username, title, content });
+      setPosts(await api.getPosts());
+    },
+    [username],
+  );
+
   return (
     <div className="min-h-screen bg-muted">
       <header className="sticky top-0 z-30 flex items-center justify-between bg-[hsl(222,62%,55%)] px-6 py-4">
@@ -71,10 +80,13 @@ function Feed() {
       </header>
 
       <main className="mx-auto max-w-[800px] space-y-6 p-6">
+        <CreatePostForm onSubmit={handleCreate} />
+
         {posts.map((post) => (
           <PostCard
             key={post.id}
             post={post}
+            isOwner={post.username === username}
             onDelete={(id: number) => setDeleteId(id)}
             onEdit={(post: Post) => setEditPost(post)}
           />
