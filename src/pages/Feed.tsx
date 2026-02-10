@@ -34,13 +34,15 @@ function Feed() {
 
   const handleEdit = useCallback(
     async (id: number, title: string, content: string) => {
-      await api.updatePost(id, { title, content });
-      setPosts((state) =>
-        state.map((post) =>
-          post.id === id ? { ...post, title, content } : post,
-        ),
-      );
-      setEditPost(null);
+      const updated = await api.updatePost(id, { title, content });
+      if (updated) {
+        setPosts((state) =>
+          state.map((post) =>
+            post.id === id ? { ...post, title, content } : post,
+          ),
+        );
+        setEditPost(null);
+      }
     },
     [],
   );
@@ -48,9 +50,13 @@ function Feed() {
   const handleDelete = useCallback(async () => {
     if (deleteId === null) return;
 
-    await api.deletePost(deleteId);
-    setPosts((state) => state.filter((post) => post.id !== deleteId));
-    setDeleteId(null);
+    try {
+      await api.deletePost(deleteId);
+      setPosts((state) => state.filter((post) => post.id !== deleteId));
+      setDeleteId(null);
+    } catch (err) {
+      console.error(err);
+    }
   }, [deleteId]);
 
   const handleLogout = () => {
@@ -60,8 +66,10 @@ function Feed() {
 
   const handleCreate = useCallback(
     async (title: string, content: string) => {
-      await api.createPost({ username, title, content });
-      setPosts(await api.getPosts());
+      const created = await api.createPost({ username, title, content });
+      if (created) {
+        setPosts((state) => [created, ...state]);
+      }
     },
     [username],
   );
