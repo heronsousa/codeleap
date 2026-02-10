@@ -3,17 +3,18 @@ import { Trash2, Pencil } from "lucide-react";
 
 interface Props {
   post: Post;
+  onDelete: (id: number) => void;
   onEdit: (post: Post) => void;
 }
 
-const PostCard = ({ post, onEdit }: Props) => {
+const PostCard = ({ post, onEdit, onDelete }: Props) => {
   return (
     <div className="overflow-hidden rounded-2xl border bg-card shadow-sm">
       <div className="flex items-center justify-between bg-[hsl(222,62%,55%)] px-6 py-4">
         <h3 className="text-[22px] font-bold text-white">{post.title}</h3>
         <div className="flex items-center gap-3">
           <button
-            onClick={() => {}}
+            onClick={() => onDelete(post.id)}
             className="text-white transition-opacity hover:opacity-80"
             aria-label="Delete post"
           >

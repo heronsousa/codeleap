@@ -1,3 +1,4 @@
+import DeletePostModal from "@/components/DeletePostModal";
 import EditPostModal from "@/components/EditPostModal";
 import PostCard from "@/components/PostCard";
 import type { Post } from "@/types";
@@ -25,6 +26,7 @@ const POSTS: Post[] = [
 ];
 
 function Feed() {
+  const [deleteId, setDeleteId] = useState<number | null>(null);
   const [editPost, setEditPost] = useState<Post | null>(null);
 
   const handleEdit = useCallback(
@@ -34,6 +36,10 @@ function Feed() {
     [],
   );
 
+  const handleDelete = useCallback(async () => {
+    console.log(deleteId);
+  }, [deleteId]);
+
   return (
     <div className="min-h-screen bg-muted">
       <header className="sticky top-0 z-30 flex items-center justify-between bg-[hsl(222,62%,55%)] px-6 py-4">
@@ -42,7 +48,12 @@ function Feed() {
 
       <main className="mx-auto max-w-[800px] space-y-6 p-6">
         {POSTS.map((post) => (
-          <PostCard key={post.id} post={post} onEdit={setEditPost} />
+          <PostCard
+            key={post.id}
+            post={post}
+            onDelete={(id: number) => setDeleteId(id)}
+            onEdit={(post: Post) => setEditPost(post)}
+          />
         ))}
       </main>
 
@@ -51,6 +62,12 @@ function Feed() {
         open={editPost !== null}
         onOpenChange={(open) => !open && setEditPost(null)}
         onSave={handleEdit}
+      />
+
+      <DeletePostModal
+        open={deleteId !== null}
+        onOpenChange={(open) => !open && setDeleteId(null)}
+        onConfirm={handleDelete}
       />
     </div>
   );
