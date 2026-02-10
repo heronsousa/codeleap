@@ -2,48 +2,54 @@ import DeletePostModal from "@/components/DeletePostModal";
 import EditPostModal from "@/components/EditPostModal";
 import PostCard from "@/components/PostCard";
 import { useUser } from "@/context/UserContext";
+import { api } from "@/services/api";
 import type { Post } from "@/types";
 import { LogOut } from "lucide-react";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-
-const POSTS: Post[] = [
-  {
-    id: 1,
-    content: "Cotent goes here.",
-    title: "Title",
-    username: "Heron",
-  },
-  {
-    id: 2,
-    content: "Cotent goes here.",
-    title: "Title",
-    username: "Heron",
-  },
-  {
-    id: 3,
-    content: "Cotent goes here.",
-    title: "Title",
-    username: "Heron",
-  },
-];
 
 function Feed() {
   const [deleteId, setDeleteId] = useState<number | null>(null);
   const [editPost, setEditPost] = useState<Post | null>(null);
+  const [posts, setPosts] = useState<Post[]>([]);
 
-  const { logout } = useUser();
+  const { username, logout } = useUser();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!username) {
+      navigate("/", { replace: true });
+      return;
+    }
+
+    getPosts();
+  }, [username, navigate]);
+
+  async function getPosts() {
+    const response = await api.getPosts();
+
+    setPosts(response);
+  }
 
   const handleEdit = useCallback(
     async (id: number, title: string, content: string) => {
-      console.log({ id, title, content });
+      await api.updatePost(id, { title, content });
+      setPosts((state) =>
+        state.map((post) =>
+          post.id === id ? { ...post, title, content } : post,
+        ),
+      );
+      setEditPost(null);
     },
     [],
   );
 
   const handleDelete = useCallback(async () => {
-    console.log(deleteId);
+    if (deleteId === null) return;
+
+    await api.deletePost(deleteId);
+    setPosts((state) => state.filter((post) => post.id !== deleteId));
+    setDeleteId(null);
   }, [deleteId]);
 
   const handleLogout = () => {
@@ -65,7 +71,7 @@ function Feed() {
       </header>
 
       <main className="mx-auto max-w-[800px] space-y-6 p-6">
-        {POSTS.map((post) => (
+        {posts.map((post) => (
           <PostCard
             key={post.id}
             post={post}
