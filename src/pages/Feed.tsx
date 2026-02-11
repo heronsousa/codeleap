@@ -2,6 +2,7 @@ import CreatePostForm from "@/components/CreatePostForm";
 import DeletePostModal from "@/components/DeletePostModal";
 import EditPostModal from "@/components/EditPostModal";
 import PostCard from "@/components/PostCard";
+import { Button } from "@/components/ui/button";
 import { useUser } from "@/context/UserContext";
 import { api } from "@/services/api";
 import type { Post } from "@/types";
@@ -77,14 +78,16 @@ function Feed() {
   return (
     <div className="min-h-screen bg-muted">
       <header className="sticky top-0 z-30 flex items-center justify-between bg-[hsl(222,62%,55%)] px-6 py-4">
-        <h1 className="text-[22px] font-bold text-white">CodeLeap Network</h1>
-        <button
+        <h1 className="text-xl! font-semibold text-white">CodeLeap Network</h1>
+        <Button
+          variant="ghost"
+          size="icon"
           onClick={handleLogout}
           className="flex items-center gap-2 text-white transition-opacity hover:opacity-80"
           aria-label="Logout"
         >
           <LogOut size={20} />
-        </button>
+        </Button>
       </header>
 
       <main className="mx-auto max-w-[800px] space-y-6 p-6">

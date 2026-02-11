@@ -27,7 +27,7 @@ const Signup = () => {
         onSubmit={handleSubmit}
         className="w-full max-w-[500px] rounded-2xl border bg-card p-6 shadow-lg"
       >
-        <h1 className="mb-2 text-[22px] font-bold text-foreground">
+        <h1 className="mb-2 text-[22px]! font-bold text-foreground">
           Welcome to CodeLeap network!
         </h1>
         <p className="mb-4 text-base text-foreground">

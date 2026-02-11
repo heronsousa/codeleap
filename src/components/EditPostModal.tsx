@@ -46,16 +46,28 @@ const EditPostModal = ({ post, open, onOpenChange, onSave }: Props) => {
         </DialogHeader>
         <div className="space-y-4">
           <div>
-            <label className="mb-1 block text-base font-normal text-foreground">Title</label>
+            <label className="mb-1 block text-base font-normal text-foreground">
+              Title
+            </label>
             <Input value={title} onChange={(e) => setTitle(e.target.value)} />
           </div>
           <div>
-            <label className="mb-1 block text-base font-normal text-foreground">Content</label>
-            <Textarea value={content} onChange={(e) => setContent(e.target.value)} className="min-h-[74px]" />
+            <label className="mb-1 block text-base font-normal text-foreground">
+              Content
+            </label>
+            <Textarea
+              value={content}
+              onChange={(e) => setContent(e.target.value)}
+              className="min-h-[74px]"
+            />
           </div>
         </div>
         <DialogFooter>
-          <Button variant="outline" onClick={() => onOpenChange(false)} className="px-8">
+          <Button
+            variant="ghost"
+            onClick={() => onOpenChange(false)}
+            className="px-8"
+          >
             Cancel
           </Button>
           <Button

@@ -18,31 +18,35 @@ const PostCard = ({ post, isOwner, onEdit, onDelete }: Props) => {
   return (
     <div className="overflow-hidden rounded-2xl border bg-card shadow-sm">
       <div className="flex items-center justify-between bg-[hsl(222,62%,55%)] px-6 py-4">
-        <h3 className="text-[22px] font-bold text-white">{post.title}</h3>
-        <div className="flex items-center gap-3">
+        <h3 className="text-[22px] font-semibold text-white">{post.title}</h3>
+        <div className="flex items-center gap-1">
           {isOwner && (
             <>
-              <button
+              <Button
+                variant="ghost"
+                size="icon"
                 onClick={() => onDelete(post.id)}
                 className="text-white transition-opacity hover:opacity-80"
                 aria-label="Delete post"
               >
                 <Trash2 size={22} />
-              </button>
-              <button
+              </Button>
+              <Button
+                variant="ghost"
+                size="icon"
                 onClick={() => onEdit(post)}
                 className="text-white transition-opacity hover:opacity-80"
                 aria-label="Edit post"
               >
                 <Pencil size={22} />
-              </button>
+              </Button>
             </>
           )}
         </div>
       </div>
       <div className="p-6">
         <div className="mb-2 flex items-center justify-between">
-          <span className="text-lg font-bold text-muted-foreground">
+          <span className="text-md font-semibold text-muted-foreground">
             @{post.username}
           </span>
           <span className="text-lg text-muted-foreground">{timeAgo}</span>
